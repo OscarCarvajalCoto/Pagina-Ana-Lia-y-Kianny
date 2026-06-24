@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pura Vida Travel - Agencia de Viajes</title>
+    <style>
+        /* --- ESTILOS CSS --- */
+        :root {
+            --primary: #0066cc;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --accent: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1353&q=80') no-repeat center center/cover;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+
+        header p {
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h2.section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--primary);
+            position: relative;
+        }
+
+        /* Grid de Destinos */
+        .destinos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .destino-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .destino-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .destino-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .destino-card h1 {
+            font-size: 1.8rem;
+            padding: 20px;
+            background-color: white;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        /* Sección de Paquetes */
+        .paquetes-section {
+            display: none; /* Se muestra al elegir un destino */
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 60px;
+            scroll-margin-top: 20px;
+        }
+
+        .paquetes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .paquete-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .paquete-card:hover {
+            border-color: var(--primary);
+            background-color: rgba(0, 102, 204, 0.02);
+        }
+
+        .paquete-card.selected {
+            border-color: var(--secondary);
+            background-color: rgba(46, 204, 113, 0.05);
+        }
+
+        .badge-mas-vendido {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        /* Formulario */
+        .formulario-section {
+            display: none; /* Se muestra al elegir un paquete */
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+            scroll-margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #27ae60;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--dark);
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agencia de Viajes Pura Vida</h1>
+        <p>Descubre los paraísos ocultos y vive la verdadera aventura</p>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="section-title">Destinos Turísticos de Costa Rica Destacados</h2>
+        
+        <div class="destinos-grid">
+            <div class="destino-card" onclick="seleccionarDestino('Guanacaste')">
+                <img src="https://www.latamairlines.com/content/dam/latamxp/sites/vamos-latam/news-costa-rica/lista-latam/Lista3.png" alt="Playas de Guanacaste">
+                <h1>Guanacaste</h1>
+            </div>
+
+            <div class="destino-card" onclick="seleccionarDestino('Volcán Arenal')">
+                <img src="https://www.creescapes.com/wp-content/uploads/arenal-costa-rica.jpg" alt="Volcán Arenal">
+                <h1>Arenal</h1>
+            </div>
+
+            <div class="destino-card" onclick="seleccionarDestino('Manuel Antonio')">
+                <img src="https://www.creescapes.com/wp-content/uploads/manuel-antonio-aerial-sunset.jpg" alt="Parque Nacional Manuel Antonio">
+                <h1>Manuel Antonio</h1>
+            </div>
+
+            <div class="destino-card" onclick="seleccionarDestino('Tortuguero')">
+                <img src="https://blackpepper.travel/cache/2023-12/viajes-costa-rica-blackpepper-0007-galeria-2x-1008x671.jpg" alt="Canales de Tortuguero">
+                <h1>Tortuguero</h1>
+            </div>
+
+            <div class="destino-card" onclick="seleccionarDestino('Monteverde')">
+                <img src="https://imgcap.capturetheatlas.com/wp-content/uploads/2024/06/Mejor-epoca-para-ir-al-Bosque-Nuboso-de-Monteverde-Costa-Rica.jpg" alt="Bosque Nuboso Monteverde">
+                <h1>Monteverde</h1>
+            </div>
+
+            <div class="destino-card" onclick="seleccionarDestino('El Caribe')">
+                <img src="https://tse1.mm.bing.net/th/id/OIP._jQpNMUwyftFMGReIQ1LuwHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Caribe Costarricense">
+                <h1>El Caribe</h1>
+            </div>
+        </div>
+
+        <section id="seccion-paquetes" class="paquetes-section">
+            <h2 style="text-align: center; margin-bottom: 10px;">Paquetes disponibles para: <span id="destino-seleccionado-txt" style="color: var(--primary);"></span></h2>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Por favor, selecciona el paquete de tu preferencia:</p>
+            
+            <div class="paquetes-grid">
+                <div class="paquete-card" id="p1" onclick="seleccionarPaquete('Transporte y Hotel', 'p1')">
+                    <h3>Paquete Básico</h3>
+                    <p style="margin: 15px 0; font-size: 0.95rem;">Incluye:</p>
+                    <p>• Transporte<br>• Hotel</p>
+                </div>
+
+                <div class="paquete-card" id="p2" onclick="seleccionarPaquete('Hotel y Alimentación', 'p2')">
+                    <h3>Paquete Relax</h3>
+                    <p style="margin: 15px 0; font-size: 0.95rem;">Incluye:</p>
+                    <p>• Hotel<br>• Alimentación</p>
+                </div>
+
+                <div class="paquete-card" id="p3" onclick="seleccionarPaquete('Transporte y Guía', 'p3')">
+                    <h3>Paquete Aventurero</h3>
+                    <p style="margin: 15px 0; font-size: 0.95rem;">Incluye:</p>
+                    <p>• Transporte<br>• Guía Turístico</p>
+                </div>
+
+                <div class="paquete-card" id="p4" onclick="seleccionarPaquete('Hotel, Transporte, Guía y Alimentación', 'p4')">
+                    <div class="badge-mas-vendido">Más vendido</div>
+                    <h3>Paquete Todo Incluido</h3>
+                    <p style="margin: 15px 0; font-size: 0.95rem;">Incluye:</p>
+                    <p>• Hotel<br>• Transporte<br>• Guía Turístico<br>• Alimentación</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="seccion-formulario" class="formulario-section">
+            <h2 style="text-align: center; margin-bottom: 25px; color: var(--dark);">Reserva tu Aventura</h2>
+            
+            <form id="form-reserva" onsubmit="procesarCompra(event)">
+                <div class="form-group">
+                    <label for="form-sitio">Sitio Turístico Seleccionado</label>
+                    <input type="text" id="form-sitio" readonly required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-paquete">Paquete Seleccionado</label>
+                    <input type="text" id="form-paquete" readonly required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-personas">Número de Personas</label>
+                    <input type="number" id="form-personas" min="1" max="20" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-fecha">Fecha del Viaje</label>
+                    <input type="date" id="form-fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-nombre">Nombre Completo</label>
+                    <input type="text" id="form-nombre" placeholder="Juan Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-telefono">Número de Teléfono</label>
+                    <input type="tel" id="form-telefono" placeholder="8888-8888" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-correo">Correo Electrónico</label>
+                    <input type="email" id="form-correo" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-pago">Método de Pago</label>
+                    <select id="form-pago" required>
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        <option value="Tarjeta de Crédito/Débito">Tarjeta de Crédito / Débito</option>
+                        <option value="SINPE Móvil">SINPE Móvil</option>
+                        <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirmar Reserva y Comprar</button>
+            </form>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Agencia de Viajes Pura Vida. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        let destinoSeleccionado = "";
+        let paqueteSeleccionado = "";
+
+        // Función cuando el usuario hace clic en un destino
+        function seleccionarDestino(nombreDestino) {
+            destinoSeleccionado = nombreDestino;
+            
+            // Actualizar texto y mostrar sección de paquetes
+            document.getElementById('destino-seleccionado-txt').innerText = nombreDestino;
+            const seccionPaquetes = document.getElementById('seccion-paquetes');
+            seccionPaquetes.style.display = 'block';
+            
+            // Asignar inmediatamente al formulario
+            document.getElementById('form-sitio').value = nombreDestino;
+
+            // Resetear selección de paquetes visual por si cambia de destino
+            desmarcarPaquetes();
+            paqueteSeleccionado = "";
+            document.getElementById('form-paquete').value = "";
+            document.getElementById('seccion-formulario').style.display = 'none';
+
+            // Hacer scroll suave hacia los paquetes
+            seccionPaquetes.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función cuando el usuario hace clic en un paquete
+        function seleccionarPaquete(nombrePaquete, cardId) {
+            paqueteSeleccionado = nombrePaquete;
+            
+            // Manejo visual de la selección
+            desmarcarPaquetes();
+            document.getElementById(cardId).classList.add('selected');
+
+            // Asignar al formulario y mostrar sección de formulario
+            document.getElementById('form-paquete').value = nombrePaquete;
+            const seccionFormulario = document.getElementById('seccion-formulario');
+            seccionFormulario.style.display = 'block';
+
+            // Hacer scroll suave hacia el formulario
+            seccionFormulario.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Quita la clase 'selected' de todas las tarjetas de paquetes
+        function desmarcarPaquetes() {
+            const tarjetas = document.querySelectorAll('.paquete-card');
+            tarjetas.forEach(tarjeta => tarjeta.classList.remove('selected'));
+        }
+
+        // Función al enviar el formulario (Simulación de compra)
+        function procesarCompra(event) {
+            event.preventDefault(); // Evita que la página se recargue
+
+            const nombre = document.getElementById('form-nombre').value;
+            
+            // Mensaje de éxito profesional
+            alert(`¡Excelente elección, ${nombre}!\n\nTu solicitud de reserva para "${destinoSeleccionado}" con el paquete "${paqueteSeleccionado}" ha sido registrada con éxito. Nos pondremos en contacto contigo a la brevedad.`);
+            
+            // Opcional: Limpiar el formulario y ocultar secciones tras la compra
+            document.getElementById('form-reserva').reset();
+            document.getElementById('seccion-paquetes').style.style.display = 'none';
+            document.getElementById('seccion-formulario').style.display = 'none';
+            desmarcarPaquetes();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
